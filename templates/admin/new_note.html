@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Yeni Not{% endblock %}
+
+{% block content %}
+<section class="admin-form-section">
+    <div class="admin-form-container">
+        <div class="admin-form-header">
+            <h1 class="admin-form-title">Yeni Not Ekle</h1>
+            <a href="{{ url_for('research_detail', research_id=research.id) }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Geri Dön
+            </a>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="research-info">
+            <h2>Araştırma: {{ research.title }}</h2>
+        </div>
+
+        <form method="POST" class="admin-form">
+            <div class="form-group">
+                <label for="title">Not Başlığı</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="content">Not İçeriği</label>
+                <textarea id="content" name="content" rows="6" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Notu Kaydet</button>
+        </form>
+    </div>
+</section>
+{% endblock %} 

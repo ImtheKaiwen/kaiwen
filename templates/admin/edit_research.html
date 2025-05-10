@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Araştırma Düzenle{% endblock %}
+
+{% block content %}
+<section class="admin-form-section">
+    <div class="admin-form-container">
+        <div class="admin-form-header">
+            <h1 class="admin-form-title">Araştırma Düzenle</h1>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Geri Dön
+            </a>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" class="admin-form">
+            <div class="form-group">
+                <label for="title">Araştırma Başlığı</label>
+                <input type="text" id="title" name="title" value="{{ research.title }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="content">İçerik</label>
+                <textarea id="content" name="content" rows="10" required>{{ research.content }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Kategori</label>
+                <select id="category" name="category" required>
+                    <option value="web" {% if research.category == 'web' %}selected{% endif %}>Web</option>
+                    <option value="mobile" {% if research.category == 'mobile' %}selected{% endif %}>Mobil</option>
+                    <option value="ai" {% if research.category == 'ai' %}selected{% endif %}>Yapay Zeka</option>
+                    <option value="other" {% if research.category == 'other' %}selected{% endif %}>Diğer</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Değişiklikleri Kaydet</button>
+        </form>
+    </div>
+</section>
+{% endblock %} 

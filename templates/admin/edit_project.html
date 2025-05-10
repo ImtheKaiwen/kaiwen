@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Proje Düzenle{% endblock %}
+
+{% block content %}
+<section class="admin-form-section">
+    <div class="admin-form-container">
+        <div class="admin-form-header">
+            <h1 class="admin-form-title">Proje Düzenle</h1>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Geri Dön
+            </a>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" class="admin-form" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">Proje Başlığı</label>
+                <input type="text" id="title" name="title" value="{{ project.title }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Açıklama</label>
+                <textarea id="description" name="description" rows="4" required>{{ project.description }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="image">Görsel</label>
+                {% if project.image_url %}
+                    <div class="current-image">
+                        <img src="{{ project.image_url }}" alt="Mevcut görsel" style="max-width: 200px; margin: 10px 0;">
+                    </div>
+                {% endif %}
+                <input type="file" id="image" name="image" accept="image/*">
+                <small>Yeni bir görsel seçmezseniz mevcut görsel korunacaktır.</small>
+            </div>
+
+            <div class="form-group">
+                <label for="link">Proje Linki</label>
+                <input type="url" id="link" name="link" value="{{ project.link }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Kategori</label>
+                <select id="category" name="category" required>
+                    <option value="web" {% if project.category == 'web' %}selected{% endif %}>Web Geliştirme</option>
+                    <option value="ai" {% if project.category == 'ai' %}selected{% endif %}>Yapay Zeka</option>
+                    <option value="mobile" {% if project.category == 'mobile' %}selected{% endif %}>Mobil</option>
+                    <option value="other" {% if project.category == 'other' %}selected{% endif %}>Diğer</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="tags">Etiketler (virgülle ayırın)</label>
+                <input type="text" id="tags" name="tags" value="{{ project.tags }}" placeholder="örn: python, flask, web">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Değişiklikleri Kaydet</button>
+        </form>
+    </div>
+</section>
+{% endblock %} 

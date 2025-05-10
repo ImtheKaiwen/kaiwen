@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Panel{% endblock %}
+
+{% block content %}
+<section class="admin-dashboard">
+    <div class="admin-header">
+        <h1 class="admin-title">Admin Panel</h1>
+        <div class="admin-actions">
+            <a href="{{ url_for('new_project') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Yeni Proje
+            </a>
+            <a href="{{ url_for('new_research') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Yeni Araştırma
+            </a>
+            <a href="{{ url_for('admin_profile') }}" class="btn btn-primary">Profil Yönetimi</a>
+            <a href="{{ url_for('admin_logout') }}" class="btn btn-secondary">
+                <i class="fas fa-sign-out-alt"></i> Çıkış Yap
+            </a>
+        </div>
+    </div>
+
+    <div class="admin-content">
+        <div class="admin-section">
+            <h2>Projeler</h2>
+            <div class="admin-table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Başlık</th>
+                            <th>Kategori</th>
+                            <th>Tarih</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for project in projects %}
+                        <tr>
+                            <td>{{ project.title }}</td>
+                            <td>{{ project.category }}</td>
+                            <td>{{ project.date_posted.strftime('%d %B %Y') }}</td>
+                            <td>
+                                <a href="{{ url_for('edit_project', project_id=project.id) }}" class="btn btn-small btn-primary">Düzenle</a>
+                                <form action="{{ url_for('delete_project', project_id=project.id) }}" method="POST" style="display: inline;">
+                                    <button type="submit" class="btn btn-small btn-danger" onclick="return confirm('Bu projeyi silmek istediğinizden emin misiniz?')">Sil</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <h2>Araştırmalar</h2>
+            <div class="admin-table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Başlık</th>
+                            <th>Kategori</th>
+                            <th>Tarih</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for research in research_items %}
+                        <tr>
+                            <td>{{ research.title }}</td>
+                            <td>{{ research.category }}</td>
+                            <td>{{ research.date_posted.strftime('%d %B %Y') }}</td>
+                            <td>
+                                <a href="{{ url_for('edit_research', research_id=research.id) }}" class="btn btn-small btn-primary">Düzenle</a>
+                                <form action="{{ url_for('delete_research', research_id=research.id) }}" method="POST" style="display: inline;">
+                                    <button type="submit" class="btn btn-small btn-danger" onclick="return confirm('Bu araştırmayı silmek istediğinizden emin misiniz?')">Sil</button>
+                                </form>
+                                <a href="{{ url_for('new_note', research_id=research.id) }}" class="btn btn-small btn-secondary">Not Ekle</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 

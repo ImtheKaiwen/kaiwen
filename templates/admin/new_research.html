@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Yeni Araştırma{% endblock %}
+
+{% block content %}
+<section class="admin-form-section">
+    <div class="admin-form-container">
+        <div class="admin-form-header">
+            <h1 class="admin-form-title">Yeni Araştırma Ekle</h1>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Geri Dön
+            </a>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" class="admin-form">
+            <div class="form-group">
+                <label for="title">Başlık</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Kategori</label>
+                <select id="category" name="category" required>
+                    <option value="web">Web</option>
+                    <option value="mobile">Mobil</option>
+                    <option value="ai">Yapay Zeka</option>
+                    <option value="other">Diğer</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="content">İçerik</label>
+                <div class="markdown-help">
+                    <p>Kod bloklarını renkli göstermek için şu şekilde yazın:</p>
+                    <pre><code>```python
+def hello_world():
+    print("Hello, World!")
+```</code></pre>
+                    <p>Desteklenen diller: python, javascript, bash, json</p>
+                </div>
+                <textarea id="content" name="content" rows="15" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Araştırma Ekle</button>
+        </form>
+    </div>
+</section>
+
+<style>
+.markdown-help {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #e9ecef;
+}
+
+.markdown-help pre {
+    background: #2d2d2d;
+    color: #fff;
+    padding: 15px;
+    border-radius: 6px;
+    margin: 10px 0;
+}
+
+.markdown-help code {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+}
+
+.markdown-help p {
+    margin: 5px 0;
+    color: #666;
+}
+</style>
+{% endblock %} 

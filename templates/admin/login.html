@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Girişi{% endblock %}
+
+{% block content %}
+<section class="admin-login-section">
+    <div class="admin-login-container">
+        <h1 class="admin-login-title">Admin Girişi</h1>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <form method="POST" class="admin-login-form">
+            <div class="form-group">
+                <label for="username">Kullanıcı Adı</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Şifre</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Giriş Yap</button>
+        </form>
+    </div>
+</section>
+{% endblock %} 

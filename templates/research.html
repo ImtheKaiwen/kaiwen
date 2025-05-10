@@ -1,0 +1,307 @@
+{% extends "base.html" %}
+
+{% block title %}Araştırmalar{% endblock %}
+
+{% block content %}
+<section class="research-section">
+    <div class="container">
+        <div class="page-header">
+            <div class="header-content">
+                <h1 class="page-title">Araştırmalar</h1>
+                <div class="title-underline"></div>
+                <p class="page-subtitle">Yazılım ve teknoloji üzerine araştırmalarım ve notlarım</p>
+            </div>
+        </div>
+
+        <div class="research-filter">
+            <button class="filter-btn active" data-category="all">Tümü</button>
+            <button class="filter-btn" data-category="web">Web</button>
+            <button class="filter-btn" data-category="mobile">Mobil</button>
+            <button class="filter-btn" data-category="ai">Yapay Zeka</button>
+            <button class="filter-btn" data-category="other">Diğer</button>
+        </div>
+
+        <div class="research-grid">
+            {% for research in research_items %}
+            <a href="{{ url_for('research_detail', research_id=research.id) }}" class="research-card" data-category="{{ research.category.lower() }}">
+                <div class="research-content">
+                    <h3 class="research-title">{{ research.title }}</h3>
+                    <p class="research-excerpt">{{ research.content[:200] }}...</p>
+                    <div class="research-meta">
+                        <span class="research-category">{{ research.category }}</span>
+                        <span class="research-date">{{ research.date_posted.strftime('%d %B %Y') }}</span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Research Modal Template -->
+<div class="modal-overlay" id="researchModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 class="modal-title" id="modalTitle"></h2>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <span class="modal-category" id="modalCategory"></span>
+        <div class="modal-content" id="modalContent"></div>
+        <div class="modal-date" id="modalDate"></div>
+    </div>
+</div>
+
+<script>
+function openResearchModal(researchId) {
+    fetch(`/api/research/${researchId}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('modalTitle').textContent = data.title;
+            document.getElementById('modalCategory').textContent = data.category;
+            document.getElementById('modalContent').innerHTML = data.content;
+            document.getElementById('modalDate').textContent = `Yayınlanma: ${data.date_posted}`;
+            document.getElementById('researchModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+}
+
+function closeModal() {
+    document.getElementById('researchModal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// Close modal when clicking outside
+document.getElementById('researchModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeModal();
+    }
+});
+
+// Filter functionality
+document.querySelectorAll('.filter-btn').forEach(button => {
+    button.addEventListener('click', () => {
+        // Remove active class from all buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        // Add active class to clicked button
+        button.classList.add('active');
+        
+        const category = button.dataset.category;
+        const researchItems = document.querySelectorAll('.research-card');
+        
+        researchItems.forEach(item => {
+            if (category === 'all' || item.dataset.category === category) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .research-section {
+        padding: 6rem 0;
+        background: linear-gradient(to bottom, #f8fafc, #ffffff);
+    }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 5rem;
+        padding: 0 1rem;
+    }
+
+    .header-content {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .page-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: #1a1a1a;
+        margin-bottom: 1rem;
+        letter-spacing: -0.03em;
+        line-height: 1.2;
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d3748 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .title-underline {
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, #0366d6, #2b6cb0);
+        margin: 1.5rem auto;
+        border-radius: 2px;
+    }
+
+    .page-subtitle {
+        font-size: 1.25rem;
+        color: #4a5568;
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.6;
+        font-weight: 400;
+        letter-spacing: 0.01em;
+    }
+
+    .research-filter {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+    }
+
+    .filter-btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        background: white;
+        color: #4a5568;
+        border-radius: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .filter-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        color: #0366d6;
+    }
+
+    .filter-btn.active {
+        background: #0366d6;
+        color: white;
+        box-shadow: 0 4px 12px rgba(3, 102, 214, 0.2);
+    }
+
+    .research-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2.5rem;
+        margin: 0 auto;
+        padding: 0.5rem;
+    }
+
+    .research-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        height: 100%;
+    }
+
+    .research-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .research-content {
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .research-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 1rem;
+        line-height: 1.4;
+    }
+
+    .research-excerpt {
+        color: #4a5568;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+        flex-grow: 1;
+    }
+
+    .research-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: auto;
+    }
+
+    .research-category {
+        background: #e1ecf4;
+        color: #2c3e50;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .research-date {
+        color: #718096;
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+        .research-section {
+            padding: 4rem 0;
+        }
+
+        .page-header {
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 2.75rem;
+        }
+
+        .title-underline {
+            width: 60px;
+            height: 3px;
+            margin: 1.25rem auto;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            padding: 0 1rem;
+        }
+
+        .research-filter {
+            padding: 0 1rem;
+            gap: 0.75rem;
+        }
+
+        .filter-btn {
+            padding: 0.6rem 1.25rem;
+            font-size: 0.9rem;
+        }
+
+        .research-grid {
+            gap: 2rem;
+            padding: 0.25rem;
+        }
+
+        .research-content {
+            padding: 1.5rem;
+        }
+
+        .research-title {
+            font-size: 1.25rem;
+        }
+    }
+</style>
+{% endblock %} 
