@@ -11,42 +11,30 @@
         </div>
 
         <div class="about-container">
-            {% if current_user.is_authenticated %}
                 <div class="profile-section">
                     <div class="profile-image-container">
-                        {% if current_user.profile_image %}
-                            <img src="{{ current_user.profile_image }}" alt="Profil Fotoğrafı" class="profile-image">
-                        {% else %}
-                            <img src="/static/images/default-profile.png" alt="Varsayılan Profil" class="profile-image">
-                        {% endif %}
+                            <img src="/static/images/pp.jpg"  class="profile-image">
                     </div>
                     
                     <div class="profile-info">
-                        <h2 class="profile-name">{{ current_user.full_name }}</h2>
-                        <p class="profile-bio">{{ current_user.bio }}</p>
+                        <h2 class="profile-name">Kerem Keskinoğlu</h2>
+                        <p class="profile-bio">Ben Kerem, kendi ilgi alanlarımda projeler üreten bir yazılım geliştiriciyim</p>
                         
                         <div class="contact-info">
-                            {% if current_user.location %}
+                            
                                 <div class="contact-item">
                                     <i class="fas fa-map-marker-alt"></i>
-                                    <span>{{ current_user.location }}</span>
+                                    <span>Düzce / Türkiye</span>
                                 </div>
-                            {% endif %}
-                            {% if current_user.email %}
+                           
+                            
                                 <div class="contact-item">
                                     <i class="fas fa-envelope"></i>
-                                    <span>{{ current_user.email }}</span>
-                                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ current_user.email }}" target="_blank" class="mail-link" title="Gmail ile E-posta Gönder">
+                                    <span>kaiwen.info@gmail.com</span>
+                                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=kaiwen.info@gmail.com" target="_blank" class="mail-link" title="Gmail ile E-posta Gönder">
                                         <i class="fas fa-paper-plane"></i>
                                     </a>
                                 </div>
-                            {% endif %}
-                            {% if current_user.website %}
-                                <div class="contact-item">
-                                    <i class="fas fa-globe"></i>
-                                    <a href="{{ current_user.website }}" target="_blank">{{ current_user.website }}</a>
-                                </div>
-                            {% endif %}
                         </div>
 
                         <div class="social-links">
@@ -63,17 +51,6 @@
                         </div>
                     </div>
                 </div>
-            {% else %}
-                <div class="profile-section">
-                    <div class="profile-image-container">
-                        <img src="/static/images/default-profile.png" alt="Varsayılan Profil" class="profile-image">
-                    </div>
-                    <div class="profile-info">
-                        <h2 class="profile-name">Yazılım Geliştirici</h2>
-                        <p class="profile-bio">Ben Kerem. Bir yazılım geliştiriciyim ve ilgi alanlarıma yönelik projeler geliştiriyorum.</p>
-                    </div>
-                </div>
-            {% endif %}
 
             <div class="skills-section">
                 <h3>Yetenekler</h3>
@@ -91,6 +68,7 @@
                         <div class="skill-item">Java</div>
                         <div class="skill-item">MongoDB</div>
                         <div class="skill-item">Electron</div>
+                        <div class="skill-item">GDScript</div>
                     {% endif %}
                 </div>
             </div>

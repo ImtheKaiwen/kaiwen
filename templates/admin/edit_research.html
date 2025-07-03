@@ -35,9 +35,10 @@
                 <label for="category">Kategori</label>
                 <select id="category" name="category" required>
                     <option value="web" {% if research.category == 'web' %}selected{% endif %}>Web</option>
-                    <option value="mobile" {% if research.category == 'mobile' %}selected{% endif %}>Mobil</option>
+                    <option value="Masaüstü" {% if research.category == 'Masaüstü' %}selected{% endif %}>Masaüstü</option>
                     <option value="ai" {% if research.category == 'ai' %}selected{% endif %}>Yapay Zeka</option>
-                    <option value="other" {% if research.category == 'other' %}selected{% endif %}>Diğer</option>
+                    <option value="other" {% if research.category == 'mobile' %}selected{% endif %}>Mobile</option>
+                    <option value="other" {% if research.category == 'game' %}selected{% endif %}>Game</option>
                 </select>
             </div>
 

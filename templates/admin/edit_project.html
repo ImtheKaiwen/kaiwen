@@ -53,7 +53,8 @@
                     <option value="web" {% if project.category == 'web' %}selected{% endif %}>Web Geliştirme</option>
                     <option value="ai" {% if project.category == 'ai' %}selected{% endif %}>Yapay Zeka</option>
                     <option value="mobile" {% if project.category == 'mobile' %}selected{% endif %}>Mobil</option>
-                    <option value="other" {% if project.category == 'other' %}selected{% endif %}>Diğer</option>
+                    <option value="other" {% if project.category == 'desktop' %}selected{% endif %}>Desktop</option>
+                    <option value="other" {% if project.category == 'game' %}selected{% endif %}>Game</option>
                 </select>
             </div>
 
